@@ -6,19 +6,19 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function hideTubContent() {
         content.forEach((item) => {
-            item.classList.add('hide')
-            item.classList.remove('show')
-            item.classList.remove('fade')
+            item.classList.add('hide');
+            item.classList.remove('show');
+            item.classList.remove('fade');
         })
         tabs.forEach((item)=>{
-            item.classList.remove('tabheader__item_active')
+            item.classList.remove('tabheader__item_active');
         })
     }
 
     function showTubContent(i = 0) {
-        content[i].classList.add('show')
-        content[i].classList.remove('hide')
-        content[i].classList.add('fade')
+        content[i].classList.add('show');
+        content[i].classList.remove('hide');
+        content[i].classList.add('fade');
         tabs[i].classList.add('tabheader__item_active');
     }
     hideTubContent();
@@ -136,38 +136,55 @@ document.addEventListener('DOMContentLoaded', () => {
     //     }
     //     }
     // }
-
     function visabilityChange(item) {
         if (window.getComputedStyle(item).display == 'none'){
+            console.log('test_3');
             form.classList.remove("hide");
-            form.classList.add('show');
+            form.classList.add("show");
             }else{
-            console.log('test');
-            form.classList.remove('show');
-            form.classList.add("hide");
+            console.log('test_1', form.classList);
+            form.classList.toggle("show");
+            form.classList.toggle("hide");
+            console.log('test_2', form.classList);
         }
     }
     
-    modalButton.forEach((item) => {
-        item.addEventListener('click', () => {
-            visabilityChange(form);
+    function overFlowChange() {
         if (document.body.style.overflow == 'hidden') {
             document.body.style.overflow = '';
         } else {
             document.body.style.overflow = 'hidden';
         }
+    }
+
+    modalButton.forEach((item) => {
+        item.addEventListener('click', () => {
+            visabilityChange(form);
+            overFlowChange();
         })
     })
 
     closeb.addEventListener('click', () => {
         visabilityChange(form);
-        if (document.body.style.overflow == 'hidden') {
-            document.body.style.overflow = '';
-        } else {
-            document.body.style.overflow = 'hidden';
+        overFlowChange();
+    })
+
+    form.addEventListener('click', (e) =>{
+        if (e.target === form) {
+            visabilityChange(form);
+            overFlowChange();
+        }
+    })
+
+    document.addEventListener('keydown', (e) =>{
+        if (e.code = 'Escape' && form.classList.contains('show')) {
+            visabilityChange(form);
+            overFlowChange();
         }
     })
 })
+
+
 
 
 
