@@ -188,6 +188,16 @@ document.addEventListener('DOMContentLoaded', () => {
         visabilityChange(form);
         overFlowChange();
     }, 5000);
+
+    function windowEndModal() {
+        if (document.documentElement.scrollTop + document.documentElement.clientHeight >= document.documentElement.scrollHeight){
+            visabilityChange(form);
+            overFlowChange();
+            window.removeEventListener('scroll', windowEndModal);
+        }
+    };
+
+    window.addEventListener('scroll', windowEndModal);
 })
 
 
