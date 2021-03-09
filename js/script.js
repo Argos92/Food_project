@@ -141,6 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('test_3');
             form.classList.remove("hide");
             form.classList.add("show");
+            clearInterval(ModalTimerID);
             }else{
             console.log('test_1', form.classList);
             form.classList.toggle("show");
@@ -182,6 +183,11 @@ document.addEventListener('DOMContentLoaded', () => {
             overFlowChange();
         }
     })
+
+    let ModalTimerID = setTimeout(() => {
+        visabilityChange(form);
+        overFlowChange();
+    }, 5000);
 })
 
 
