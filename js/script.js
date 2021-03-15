@@ -205,18 +205,43 @@ document.addEventListener('DOMContentLoaded', () => {
             this.price=price;
             this.course=course;
             this.parentSelector=parentSelector;
-
-            function ChangeCourse() {
-                this.price=this.price*this.course;
-            }
-
-            CreateCard() {
-                parent.querySelector(this.parentSelector);
-                const div = document.createElement()
-            }
+            this.changeCourse();
         }
+
+            changeCourse() {
+                this.price=this.price*this.course;
+            };
+
+            render() {
+                parent= document.querySelector(this.parentSelector);
+                const element = document.createElement('div');
+                element.innerHTML = `
+                <div class="menu__item">
+                    <img src=${this.src} alt=${this.alt}>
+                    <h3 class="menu__item-subtitle">${this.title}</h3>
+                    <div class="menu__item-descr">${this.descr}</div>
+                    <div class="menu__item-divider"></div>
+                    <div class="menu__item-price">
+                        <div class="menu__item-cost">Цена:</div>
+                        <div class="menu__item-total"><span>${this.price}</span> грн/день</div>
+                    </div>
+                </div>
+                `;
+                parent.append(element);
+            };
+        
     }
-})
+
+    new MenuCards(
+        "img/tabs/elite.jpg",
+        "elite",
+        'Меню “Премиум”',
+        'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!',
+        17,
+        27,
+        '.menu .container'
+    ).render();
+});
 
 
 
