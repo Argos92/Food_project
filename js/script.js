@@ -138,15 +138,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // }
     function visabilityChange(item) {
         if (window.getComputedStyle(item).display == 'none'){
-            console.log('test_3');
             form.classList.remove("hide");
             form.classList.add("show");
             clearInterval(ModalTimerID);
             }else{
-            console.log('test_1', form.classList);
             form.classList.toggle("show");
             form.classList.toggle("hide");
-            console.log('test_2', form.classList);
         }
     }
     
@@ -184,10 +181,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     })
 
-    let ModalTimerID = setTimeout(() => {
-        visabilityChange(form);
-        overFlowChange();
-    }, 5000);
+    // let ModalTimerID = setTimeout(() => {
+    //     visabilityChange(form);
+    //     overFlowChange();
+    // }, 20000);
 
     function windowEndModal() {
         if (document.documentElement.scrollTop + document.documentElement.clientHeight >= document.documentElement.scrollHeight){
@@ -198,6 +195,27 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     window.addEventListener('scroll', windowEndModal);
+
+    class MenuCards {
+        constructor(src,alt, title, descr,price,parentSelector){
+            this.src=src;
+            this.alt=alt;
+            this.title=title;
+            this.descr=descr;
+            this.price=price;
+            this.course=course;
+            this.parentSelector=parentSelector;
+
+            function ChangeCourse() {
+                this.price=this.price*this.course;
+            }
+
+            CreateCard() {
+                parent.querySelector(this.parentSelector);
+                const div = document.createElement()
+            }
+        }
+    }
 })
 
 
