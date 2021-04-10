@@ -175,16 +175,19 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     document.addEventListener('keydown', (e) =>{
-        if (e.code = 'Escape' && form.classList.contains('show')) {
+        if (e.code==='Escape'){
+            console.log('escape keydown');
+        }
+        if (e.code === 'Escape' && form.classList.contains('show')) {
             visabilityChange(form);
             overFlowChange();
         }
     })
 
-    // let ModalTimerID = setTimeout(() => {
-    //     visabilityChange(form);
-    //     overFlowChange();
-    // }, 20000);
+    let ModalTimerID = setTimeout(() => {
+        visabilityChange(form);
+        overFlowChange();
+    }, 20000);
 
     function windowEndModal() {
         if (document.documentElement.scrollTop + document.documentElement.clientHeight >= document.documentElement.scrollHeight){
@@ -278,7 +281,7 @@ document.addEventListener('DOMContentLoaded', () => {
         success: 'Спасибо, скоро мы с вами свяжемся',
         failure: 'Что то пошло не так...'
     }
-    console.log(forms);
+
     forms.forEach(item => {
         postData(item);
     })
@@ -293,13 +296,26 @@ document.addEventListener('DOMContentLoaded', () => {
             const request = new XMLHttpRequest();
             request.open('POST', 'server.php');//обязательная первая часть
 
-            //request.setRequestHeader('Content-type', 'multipart/form-data');//последняя часть пока без объяснений
+            // request.setRequestHeader('Content-type', 'multipart/form-data');//Эта строчка не нужна при обычном формате. Здесь ее поначалу написали для наглядности, потом удалили.последняя часть для обычного формата строки, не для JSON
+            request.setRequestHeader('Content-type', 'application/json');//Для JSON заголовок нужен
             const formData = new FormData(form);
-            request.send(formData);
+
+            const object = {};//Это и конструкция (4 строчки) ниже перегоняет formData в JSON
+            formData.forEach(function(value, key) {
+                object[key] = value;
+            });
+            const json = JSON.stringify(object);
+
+            //request.send(formData);//Для версии со строкой
+            request.send(json);
             request.addEventListener('load', () => {
                 if (request.status === 200) {
                     console.log(request.response);
                     statusMessage.textContent = message.success;
+                    form.reset();
+                    setTimeout(() => {
+                        statusMessage.remove();
+                    }, 2000);
                 } else {
                     statusMessage.textContent = message.failure;
                 }
