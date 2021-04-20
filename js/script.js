@@ -271,32 +271,36 @@ document.addEventListener('DOMContentLoaded', () => {
                 margin: 0 auto; 
             `;
             form.insertAdjacentElement("afterend",statusMessage);
-            const request = new XMLHttpRequest();
-            request.open('POST', 'server.php');//обязательная первая часть
+            
+            // request.open('POST', 'server.php');//обязательная первая часть
 
             // request.setRequestHeader('Content-type', 'multipart/form-data');//Эта строчка не нужна при обычном формате. Здесь ее поначалу написали для наглядности, потом удалили.последняя часть для обычного формата строки, не для JSON
-            request.setRequestHeader('Content-type', 'application/json');//Для JSON заголовок нужен
+            // request.setRequestHeader('Content-type', 'application/json');//Для JSON заголовок нужен
             const formData = new FormData(form);
 
             const object = {};//Это и конструкция (4 строчки) ниже перегоняет formData в JSON
             formData.forEach(function(value, key) {
                 object[key] = value;
             });
-            const json = JSON.stringify(object);
 
             //request.send(formData);//Для версии со строкой
-            request.send(json);
-            request.addEventListener('load', () => {
-                if (request.status === 200) {
-                    console.log(request.response);
-                    showThanksModal(message.success);
-                    form.reset();
-                    statusMessage.remove();
-                } else {
-                    showThanksModal(message.failure);
-                    statusMessage.remove();
-                }
-            });
+            fetch('server.php', {
+                method:'POST',
+                headers: {
+                    'Content-type': 'application.json'
+                },
+                body:JSON.stringify(object)
+            }).then(data => data.text())
+            .then(data => {
+                console.log(data);//data это все что будет получено от сервера
+                showThanksModal(message.success);
+                form.reset();
+                statusMessage.remove();
+            }).catch(() => {
+                showThanksModal(message.failure);
+            }).finally(() => {
+                form.reset();
+            })
         })
     }
 
@@ -329,6 +333,20 @@ document.addEventListener('DOMContentLoaded', () => {
             previousModalDialog.classList.remove('hide');
         }
     }
+    //пример get запроса
+    // fetch('https://jsonplaceholder.typicode.com/todos/1')
+    //     .then(response => response.json()) //обработка JSON запроса
+    //     .then(json => console.log(json));
+
+    fetch('https://jsonplaceholder.typicode.com/posts', {
+        method: 'POST',
+        body:JSON.stringify({name: 'Alex'}),
+        headers: {
+            'Content-type': 'application/json'
+        }
+    })
+        .then(response => response.json()) //обработка JSON запроса
+        .then(json => console.log(json));
 });
 
 
